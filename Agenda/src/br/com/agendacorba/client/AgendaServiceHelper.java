@@ -7,10 +7,4 @@ import org.omg.CORBA.ORB;
  */
 public class AgendaServiceHelper {
 
-    public void resolve(String ip, String port) {
-        System.out.println("resolve()");
-    }
-
-
-
 }

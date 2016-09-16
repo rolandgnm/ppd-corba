@@ -5,11 +5,13 @@ module br {
     //package raiz
     module agenda {
 
+        //Classe pra agrupar nome e telefone
         struct Contact{
             string name;
             string telNumber;
         };
 
+        //especifica tipo pra passagem de lista
         typedef sequence<Contact> contactList;
 
         exception ContactAlreadyExistsException {
@@ -21,6 +23,7 @@ module br {
             string message;
         };
 
+        //Camada de acesso Usuario->Servidor
         module access {
 
             interface AgendaAccess {
@@ -36,6 +39,7 @@ module br {
             };
         };
 
+        //Camada de comunicacao entre servants
         module backbone {
 
             interface AgendaBackbone {
@@ -46,6 +50,8 @@ module br {
                 void propagateUpdate(in Contact updatedContact);
 
                 void propagateDelete(in Contact deletedContact);
+
+                void bindDuplexConnection(in string requesterName);
             };
         };
       };

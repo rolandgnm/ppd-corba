@@ -1,4 +1,4 @@
-package br.com.agendacorba.cliente;
+package br.com.agendacorba.client;
 
 import java.util.Scanner;
 
@@ -31,8 +31,6 @@ public class ClientController {
 
     private void cliInterface() {
         while (KEEP_ALIVE) {
-
-            choice = getChoice();
 
             switch (choice) {
 

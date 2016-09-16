@@ -1,4 +1,4 @@
-package br.com.agendacorba.cliente;
+package br.com.agendacorba.client;
 
 public class ClientMain {
 

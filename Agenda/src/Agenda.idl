@@ -1,0 +1,32 @@
+module agenda {
+
+    struct Contact{
+        string name;
+        string telNumber;
+    };
+
+    typedef sequence<Contact> contactList;
+
+    exception ContactAlreadyExistsException {
+        string message;
+        string name;
+    };
+
+    exception NoContactFoundException {
+        string message;
+    };
+
+    interface AgendaAccess {
+        Contact create(in Contact created) raises (ContactAlreadyExistsException);
+
+        Contact getByName(in string name) raises (NoContactFoundException);
+
+        contactList getAll() raises (NoContactFoundException);
+
+        Contact update(in Contact contact) raises (NoContactFoundException, ContactAlreadyExistsException);
+
+        void deleteByName(in string name) raises (NoContactFoundException);
+    };
+
+
+ };

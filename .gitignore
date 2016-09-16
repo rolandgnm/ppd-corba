@@ -9,7 +9,8 @@ nbactions.xml
 .nb-gradle/
 
 ## Adicionado
-/out/
+out
+out
 META-INF/
 
 # built application files

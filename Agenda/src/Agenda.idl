@@ -1,32 +1,54 @@
-module agenda {
+//Hierarquia para estabelecer corretamente os pacotes
+module br {
+ module com {
+  module agendacorba {
+    //package raiz
+    module agenda {
 
-    struct Contact{
-        string name;
-        string telNumber;
-    };
+        struct Contact{
+            string name;
+            string telNumber;
+        };
 
-    typedef sequence<Contact> contactList;
+        typedef sequence<Contact> contactList;
 
-    exception ContactAlreadyExistsException {
-        string message;
-        string name;
-    };
+        exception ContactAlreadyExistsException {
+            string message;
+            string name;
+        };
 
-    exception NoContactFoundException {
-        string message;
-    };
+        exception NoContactFoundException {
+            string message;
+        };
 
-    interface AgendaAccess {
-        Contact create(in Contact created) raises (ContactAlreadyExistsException);
+        module access {
 
-        Contact getByName(in string name) raises (NoContactFoundException);
+            interface AgendaAccess {
+                Contact create(in Contact created) raises (ContactAlreadyExistsException);
 
-        contactList getAll() raises (NoContactFoundException);
+                Contact getByName(in string name) raises (NoContactFoundException);
 
-        Contact update(in Contact contact) raises (NoContactFoundException, ContactAlreadyExistsException);
+                contactList getAll() raises (NoContactFoundException);
 
-        void deleteByName(in string name) raises (NoContactFoundException);
-    };
+                Contact update(in Contact contact) raises (NoContactFoundException, ContactAlreadyExistsException);
 
+                void deleteByName(in string name) raises (NoContactFoundException);
+            };
+        };
 
+        module backbone {
+
+            interface AgendaBackbone {
+                void propagateCreate(in Contact newContact);
+
+                contactList getAll();
+
+                void propagateUpdate(in Contact updatedContact);
+
+                void propagateDelete(in Contact deletedContact);
+            };
+        };
+      };
+     };
+   };
  };

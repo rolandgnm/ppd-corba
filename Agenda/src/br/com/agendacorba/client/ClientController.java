@@ -10,9 +10,14 @@ public class ClientController {
     char choice;
     private String IP;
     private String PORT;
-    AgendaService agendaService;
+    AgendaServiceHelper agendaService;
     //Todo Criar service
 
+
+    public ClientController() {
+        agendaService = new AgendaServiceHelper();
+        cliStartup();
+    }
 
     private void cliStartup() {
         Scanner in = new Scanner(System.in);

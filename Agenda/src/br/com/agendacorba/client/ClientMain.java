@@ -6,7 +6,7 @@ public class ClientMain {
 
     public static void main(String[] args) {
 
-        controller = new ClientController();
+        controller = new ClientController(args);
 
     }
 }

@@ -1,27 +1,37 @@
 package br.com.agendacorba.client;
 
+import br.com.agendacorba.agenda.Contact;
+import br.com.agendacorba.agenda.access.AgendaAccess;
+
+import java.awt.event.KeyListener;
+import java.util.Scanner;
+
 /**
  * Created by Roland on 9/15/16.
  */
 public class ClientController {
-    boolean KEEP_ALIVE = true;
-    char choice;
-    AgendaServiceHelper agendaService;
-//    AgendaAccess agenda;
+    private boolean KEEP_ALIVE = true;
+    private char choice;
+    private Scanner in;
 
-    //Todo Criar service
+    private AgendaClientServiceHelper agendaService;
+    private AgendaAccess agenda;
 
+    public ClientController(String[] args) {
+        agendaService = new AgendaClientServiceHelper(args);
+        agenda = agendaService.findServer();
+        in = new Scanner(System.in);
+        //TODO achar uma agenda disponivel
 
-    public ClientController() {
-        agendaService = new AgendaServiceHelper();
-
+        System.out.printf(MESSAGE.START_UP.toString());
         runCLIInterface();
     }
 
 
     private void runCLIInterface() {
         while (KEEP_ALIVE) {
-            System.out.printf(MESSAGE[0]);
+            System.out.printf(MESSAGE.MENU.toString());
+            choice = in.next().charAt(0);
 
             switch (choice) {
                 case 'I':
@@ -47,6 +57,9 @@ public class ClientController {
                 case 'F':
                     shutDown();
                     break;
+                default:
+                    System.out.printf(MESSAGE.ERR_WRONG_OPTION.toString());
+                    break;
             }
 
 
@@ -54,18 +67,7 @@ public class ClientController {
 
     }
 
-    private void listAllContacts() {
-    }
-
-    private void shutDown() {
-
-    }
-
-    private void removeContact() {
-
-    }
-
-    private void updateContact() {
+    private void insertContact() {
 
     }
 
@@ -73,56 +75,23 @@ public class ClientController {
 
     }
 
-    private void insertContact() {
+    private void listAllContacts() {
 
     }
 
-    String[] MESSAGE = {
-            //Boas vindas 0
-            "########################################" +
-            "########## BEM VINDO A AGENDA ##########" +
-            "########################################",
+    private void updateContact() {
 
-            //Menu Principal 1
-            "> Entre com uma acao: \n" +
-                    "\'i\' Inserir\t" +
-                    "\'p\' Pesquisar\t" +
-                    "\'l\' Listar\t" +
-                    "\'a\' Atualizar\t" +
-                    "\'r\' Remover\t" +
-                    "\'F\' Fechar\t" +
-                    ": ",
+    }
 
-            //Inserir 2,3
-            "> Entre com um Nome para o novo contato: ",
+    private void removeContact() {
 
-            "> Telefone: ",
+    }
 
-            //Consultar 4-6
-            "> Entre com um nome a ser consultado: ",
+    private void shutDown() {
+        KEEP_ALIVE = false;
 
-            "- Buscando...",
+    }
 
-            "* Resultado encontrado: ",
-
-            //Atualizar 7-8
-            "> Entre com o nome do contato a ser alterado: ",
-
-            "Telefone: ",
-
-            //Remover 9
-            "> Entre com o nome do contato a ser removido: ",
-
-            //sucesso 10
-            "* Operaracao realizada com sucesso!",
-
-            //Erros 11-14
-            "ERRO 1! Nenhum contato encontrado!",
-            "ERRO 2! Contato já existente!",
-            "ERRO 3! Nenhum servidor encontrado!",
-            "ERRO 4! Numero de telefone mal formado!"
-
-    };
 
 
 }

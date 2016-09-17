@@ -17,20 +17,27 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
  */
 public class Cliente {
 
+    private static ORB orb;
+    private static Object objNameService;
+    private static NamingContext naming;
+    private static NameComponent[] name;
+    private static Object objRefToServant;
+    private static Calculadora calc;
+
     public static void main(String[] args) {
-        ORB orb = ORB.init(args, null);
+        orb = ORB.init(args, null);
 
         try {
-            Object obj = orb.resolve_initial_references("NameService");
+            objNameService = orb.resolve_initial_references("NameService");
 
-            NamingContext naming = NamingContextHelper.narrow(obj);
+            naming = NamingContextHelper.narrow(objNameService);
 
-            NameComponent[] name = {new NameComponent("Calculadora", args[2])};
+            name = new NameComponent[]{new NameComponent("Calculadora", args[2])};
             System.out.printf(args[2]);
 
-            Object objRef = naming.resolve(name);
+            objRefToServant = naming.resolve(name);
 
-            Calculadora calc = CalculadoraHelper.narrow(objRef);
+            calc = CalculadoraHelper.narrow(objRefToServant);
 
             System.out.println("5+3=" + calc.soma(5, 3));
 

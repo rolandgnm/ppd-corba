@@ -41,7 +41,7 @@ public class Cliente {
 
             System.out.println("5+3=" + calc.soma(5, 3));
 
-            while (1 != 0) {
+            while (true) {
                 Thread.sleep(1000);
                 try {
                     System.out.printf("5/0=" + calc.divisao(5, 0));
@@ -49,6 +49,8 @@ public class Cliente {
                     System.out.println("Divisao por Zero");
                     System.out.println("A divisao foi " + ex.arg1 +
                             "/" + ex.arg2);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

@@ -16,30 +16,39 @@ import org.omg.PortableServer.POAPackage.WrongPolicy;
 
 public class Servidor {
 
+    private static ORB orb;
+    private static Object objRootPOA;
+    private static POA rootPOA;
+    private static Object objNaming;
+    private static NamingContext nameService;
+    private static CalculadoraImpl calcServant;
+    private static Object objRefcalc;
+    private static NameComponent[] calcServName;
+
     public static void main(String[] args) {
 
         try {
-            ORB orb = ORB.init(args, null);
+            //Pega RootPOA e NameSpace
+            orb = ORB.init(args, null);
+            objRootPOA = null;
+            objRootPOA = orb.resolve_initial_references("RootPOA");
+            rootPOA = POAHelper.narrow(objRootPOA);
+            objNaming = orb.resolve_initial_references("NameService");
+            nameService = NamingContextHelper.narrow(objNaming);
 
-            Object objPOA = null;
-            objPOA = orb.resolve_initial_references("RootPOA");
-            POA rootPOA = POAHelper.narrow(objPOA);
+            //Cria objeto/referencia
+            calcServant = new CalculadoraImpl();
+            objRefcalc = rootPOA.servant_to_reference(calcServant);
 
-            Object obj =  orb.resolve_initial_references("NameService");
-            NamingContext naming = NamingContextHelper.narrow(obj);
+            //Cria
 
-            CalculadoraImpl calcServant = new CalculadoraImpl();
+            //Cria nome e rebind
+            calcServName = new NameComponent[]{new NameComponent("Calculadora", args[2])};
+            nameService.rebind(calcServName, objRefcalc);
 
-            Object objRef = rootPOA.servant_to_reference(calcServant);
-
-            NameComponent[] name = {new NameComponent("Calculadora", args[2])};
-            naming.rebind(name, objRef);
             System.out.printf(args[2]);
-
-            rootPOA.the_POAManager().activate();
-
+            rootPOA.the_POAManager().activate(); //Ativa e roda
             System.out.printf("Servidor Pronto ...");
-
             orb.run();
 
         } catch (InvalidName invalidName) {

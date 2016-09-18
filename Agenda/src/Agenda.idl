@@ -27,13 +27,13 @@ module br {
         module access {
 
             interface AgendaAccess {
-                Contact create(in Contact created) raises (ContactAlreadyExistsException);
+                void create(in Contact created) raises (ContactAlreadyExistsException);
 
                 Contact getByName(in string name) raises (NoContactFoundException);
 
                 contactList getAll() raises (NoContactFoundException);
 
-                Contact update(in Contact contact) raises (NoContactFoundException, ContactAlreadyExistsException);
+                void update(in Contact contact) raises (NoContactFoundException);
 
                 void deleteByName(in string name) raises (NoContactFoundException);
             };

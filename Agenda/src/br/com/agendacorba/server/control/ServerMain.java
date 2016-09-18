@@ -8,9 +8,11 @@ import br.com.agendacorba.server.control.ServerController;
 public class ServerMain {
 
 
+    private static ServerController controller;
+
     public static void main(String[] args) {
 
-        new ServerController(args);
+        controller =  new ServerController(args);
 
     }
 }

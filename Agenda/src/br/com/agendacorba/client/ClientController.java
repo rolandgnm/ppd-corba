@@ -1,9 +1,7 @@
 package br.com.agendacorba.client;
 
-import br.com.agendacorba.agenda.Contact;
 import br.com.agendacorba.agenda.access.AgendaAccess;
 
-import java.awt.event.KeyListener;
 import java.util.Scanner;
 
 /**
@@ -15,16 +13,24 @@ public class ClientController {
     private Scanner in;
 
     private AgendaClientServiceHelper agendaService;
-    private AgendaAccess agenda;
+    private AgendaAccess agendaStub;
 
     public ClientController(String[] args) {
         agendaService = new AgendaClientServiceHelper(args);
-        agenda = agendaService.findServer();
-        in = new Scanner(System.in);
-        //TODO achar uma agenda disponivel
+        agendaStub = agendaService.findServer();
 
-        System.out.printf(MESSAGE.START_UP.toString());
-        runCLIInterface();
+        if (agendaStub != null) {
+            in = new Scanner(System.in);
+            System.out.printf(MESSAGE.START_UP.toString());
+            runCLIInterface();
+        }
+        else {
+            System.out.printf(MESSAGE.ERR_NO_SERVER_FOUND.toString());
+        }
+
+
+
+        //TODO tratar caso de não achar nada!
     }
 
 
@@ -91,7 +97,6 @@ public class ClientController {
         KEEP_ALIVE = false;
 
     }
-
 
 
 }

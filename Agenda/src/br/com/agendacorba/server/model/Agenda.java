@@ -3,21 +3,21 @@ package br.com.agendacorba.server.model;
 import br.com.agendacorba.agenda.Contact;
 import br.com.agendacorba.agenda.ContactAlreadyExistsException;
 import br.com.agendacorba.agenda.NoContactFoundException;
-
-import java.util.List;
+import br.com.agendacorba.agenda.access.AgendaAccessOperations;
+import br.com.agendacorba.agenda.access.AgendaAccessPOA;
 
 /**
  * Created by Roland on 9/17/16.
  */
-public interface Agenda {
-    Contact createContact(Contact created, Boolean propagate) throws ContactAlreadyExistsException;
+public interface Agenda extends AgendaAccessOperations {
+    void create(Contact created) throws ContactAlreadyExistsException;
 
-    Contact update(Contact contact, Boolean propagate) throws NoContactFoundException, ContactAlreadyExistsException;
+    void update(Contact contact) throws NoContactFoundException;
 
-    void deleteByName(String name, Boolean propagate) throws NoContactFoundException;
+    void deleteByName(String name) throws NoContactFoundException;
 
     Contact getByName(String name) throws NoContactFoundException;
 
-    List<Contact> getAll() throws NoContactFoundException;
+    Contact[] getAll() throws NoContactFoundException;
 
 }

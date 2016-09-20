@@ -8,21 +8,22 @@ import br.com.agendacorba.agenda.access.AgendaAccessOperations;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 import java.util.jar.Pack200;
 
 /**
  * Created by Roland on 9/15/16.
  */
-public class AgendaImpl implements Agenda {
+public class AgendaModel implements Agenda {
     private List<Contact> contactList;
 
-    public AgendaImpl(Contact[] currentList) {
+    public AgendaModel(Contact[] currentList) {
         contactList = Arrays.asList(currentList);
 
     }
 
-    public AgendaImpl() {
-        contactList = new ArrayList<>();
+    public AgendaModel() {
+        contactList = new ArrayList<Contact>();
     }
 
 
@@ -55,11 +56,11 @@ public class AgendaImpl implements Agenda {
     public Contact getByName(String name) throws NoContactFoundException {
         Contact existing = null;
 
-        if(contactList.isEmpty())
+        if (contactList.isEmpty())
             throw new NoContactFoundException();
 
-        for(Contact i : contactList) {
-            if(i.name.equals(name))
+        for (Contact i : contactList) {
+            if (i.name.equals(name))
                 existing = i;
         }
         return existing;
@@ -67,9 +68,10 @@ public class AgendaImpl implements Agenda {
 
     @Override
     public Contact[] getAll() throws NoContactFoundException {
-        if (contactList.size() > 0)
-            return (Contact[]) contactList.toArray();
-        else
+        if (contactList.size() > 0) {
+            Contact[] contacts = (Contact[]) contactList.toArray().clone();
+            return contacts;
+        } else
             throw new NoContactFoundException();
 
     }

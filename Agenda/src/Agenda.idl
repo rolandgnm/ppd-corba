@@ -23,17 +23,21 @@ module br {
             string message;
         };
 
+        exception MalformedTelNumberException {
+            string telNumber;
+        };
+
         //Camada de acesso Usuario->Servidor
         module access {
 
             interface AgendaAccess {
-                void create(in Contact created) raises (ContactAlreadyExistsException);
+                void create(in Contact created) raises (ContactAlreadyExistsException, MalformedTelNumberException);
 
                 Contact getByName(in string name) raises (NoContactFoundException);
 
                 contactList getAll() raises (NoContactFoundException);
 
-                void update(in Contact contact) raises (NoContactFoundException);
+                void update(in Contact contact) raises (NoContactFoundException, MalformedTelNumberException);
 
                 void deleteByName(in string name) raises (NoContactFoundException);
             };

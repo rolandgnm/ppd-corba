@@ -24,45 +24,52 @@ public enum MESSAGE {
 
     //Inserir 2,3
     INSERT_NAME
-            ("> Entre com um Nome para o novo contato: "),
+            ("\t\t> Entre com um Nome para o novo contato: "),
     INSERT_TEL
-            ("> Telefone: "),
+            ("\t\t> Telefone: "),
+
+    TABLE_HEAD
+            ("\n\t\t>Nome,\t#Telefone"),
 
     //Consultar 4-6
     SEARCH_NAME
-            ("> Entre com um nome a ser consultado: "),
+            ("\t\t> Entre com um nome a ser consultado: "),
     SEARCHING
-            ("- Buscando..."),
+            ("\n\t\t- Buscando..."),
 
     CONTACT_FOUND
-            ("* Resultado encontrado: "),
+            ("\n\t\t* Resultado(s) encontrado(s): "),
 
     //Atualizar 7-8
     UPDATE_CONTACT
-            ("> Entre com o nome do contato a ser alterado: "),
+            ("\n\t\t> Entre com o nome do contato a ser alterado: "),
 
 
     //Remover 9
     REMOVE_CONTACT
-            ("> Entre com o nome do contato a ser removido: "),
+            ("\n\t\t>Entre com o nome do contato a ser removido: "),
 
     //sucesso 10
     SUCCESS
-            ("* Operaracao realizada com sucesso!"),
+            ("\n\t\t* Operaracao realizada com sucesso!"),
+    SERVER_FOUND
+            ("\n* Servidor Encontrado!"),
 
     //Erros 11-15
     ERR_WRONG_OPTION
-            ("\nERRO 0! Opcao nao existe!\n"),
+            ("\n\t\tERRO 0! Opcao nao existe!\n"),
 
     ERR_NOT_FOUND
-            ("\nERRO 1! Nenhum contato encontrado!\n"),
+            ("\n\t\tERRO 1! Nenhum contato encontrado!\n"),
 
     ERR_ALREADY_EXISTS
-            ("\nERRO 2! Contato já existente!\n"),
+            ("\n\t\tERRO 2! Contato já existente!\n"),
     ERR_NO_SERVER_FOUND
-            ("\nERRO 3! Nenhum servidor encontrado!\n"),
+            ("\n\t\tERRO 3! Nenhum servidor encontrado!\n"),
     ERR_MALFORMED_TEL
-            ("\nERRO 4! Numero de telefone mal formatado!\n");
+            ("\n\t\tERRO 4! Numero de telefone mal formatado!\n"),
+    ERR_SERVER_NOT_FOUND
+            ("\nERRO 5! Servidor não Encontrado!");
 
     private final String text;
 

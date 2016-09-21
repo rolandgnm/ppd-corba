@@ -7,6 +7,7 @@ import org.omg.CORBA.Object;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextHelper;
+import org.omg.CosNaming.NamingContextPackage.AlreadyBound;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.omg.PortableServer.POA;
@@ -21,6 +22,7 @@ import org.omg.PortableServer.POAPackage.WrongPolicy;
 public class AgendaAccessServiceHelper {
 
 
+    private final NameComponent accessNSComp;
     private NamingContext rootContext;
     private Object objRootCtx;
     private POA rootPOA;
@@ -34,9 +36,11 @@ public class AgendaAccessServiceHelper {
     String refName;
     private NamingContext accessContext;
     private ORB orb;
+    private boolean CONTEXT_ALREADY_BOUND;
 
     public AgendaAccessServiceHelper(String instanceName, String[] ORBargs) {
         this.instanceName = instanceName;
+        accessNSComp = new NameComponent(namespace, nsKind);
 
         try {
             orb = ORB.init(ORBargs, null);
@@ -49,37 +53,41 @@ public class AgendaAccessServiceHelper {
             invalidName.printStackTrace();
         }
 
-        findOrBindNameContext(namespace, nsKind);
     }
 
-    private void findOrBindNameContext(String namespace, String nsKind) {
-        NameComponent[] accessNSComp = new NameComponent[]{new NameComponent(namespace, nsKind)};
+    private void bindNewContext() {
+
+        System.out.println("INFO: Creating AgendaAccess Context");
         try {
-
-            rootContext.rebind_context(accessNSComp, accessContext);
-
-        } catch (NotFound notFound) {
+            accessContext = rootContext.bind_new_context(new NameComponent[]{accessNSComp});
+        } catch (NotFound |
+                AlreadyBound |
+                CannotProceed |
+                org.omg.CosNaming.NamingContextPackage.InvalidName notFound) {
             notFound.printStackTrace();
-        } catch (CannotProceed cannotProceed) {
-            cannotProceed.printStackTrace();
-        } catch (org.omg.CosNaming.NamingContextPackage.InvalidName invalidName) {
-            invalidName.printStackTrace();
         }
 
+        System.out.println("INFO: Context Bound with name " + namespace + ":"  + nsKind);
+
     }
 
+
     public void buildServantAndBind(ServerController serverController) {
-        accessServant = new AgendaAccessImpl(serverController);
+
+        if (serverController != null)
+            accessServant = new AgendaAccessImpl(serverController);
 
         try {
 
             Object orbObjAccess = rootPOA.servant_to_reference(accessServant);
-            NameComponent[] servantName = new NameComponent[]{new NameComponent(instanceName, nsKind)};
+            NameComponent[] servantName = new NameComponent[]{accessNSComp, new NameComponent(instanceName, nsKind)};
 
-            accessContext.rebind(servantName, orbObjAccess);
+            rootContext.rebind(servantName, orbObjAccess);
+            System.out.println("INFO: Server ready with name: " + instanceName);
 
             rootPOA.the_POAManager().activate();
             orb.run();
+
 
         } catch (ServantNotActive servantNotActive) {
             servantNotActive.printStackTrace();
@@ -90,7 +98,8 @@ public class AgendaAccessServiceHelper {
         } catch (org.omg.CosNaming.NamingContextPackage.InvalidName invalidName) {
             invalidName.printStackTrace();
         } catch (NotFound notFound) {
-            notFound.printStackTrace();
+            bindNewContext();
+            buildServantAndBind(null);
         } catch (AdapterInactive adapterInactive) {
             adapterInactive.printStackTrace();
         }

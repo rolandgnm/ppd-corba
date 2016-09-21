@@ -2,6 +2,7 @@ package br.com.agendacorba.server.access;
 
 import br.com.agendacorba.agenda.Contact;
 import br.com.agendacorba.agenda.ContactAlreadyExistsException;
+import br.com.agendacorba.agenda.MalformedTelNumberException;
 import br.com.agendacorba.agenda.NoContactFoundException;
 import br.com.agendacorba.agenda.access.AgendaAccessPOA;
 import br.com.agendacorba.server.control.ServerController;
@@ -19,7 +20,7 @@ public class AgendaAccessImpl extends AgendaAccessPOA {
     }
 
     @Override
-    public void create(Contact created) throws ContactAlreadyExistsException {
+    public void create(Contact created) throws ContactAlreadyExistsException, MalformedTelNumberException {
         serverCtrl.create(created, PROPAGATE);
     }
 
@@ -34,8 +35,9 @@ public class AgendaAccessImpl extends AgendaAccessPOA {
     }
 
     @Override
-    public void update(Contact contact) throws NoContactFoundException {
+    public void update(Contact contact) throws NoContactFoundException, MalformedTelNumberException {
         serverCtrl.update(contact, PROPAGATE);
+
     }
 
     @Override

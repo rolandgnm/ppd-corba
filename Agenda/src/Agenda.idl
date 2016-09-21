@@ -12,19 +12,15 @@ module br {
         };
 
         //especifica tipo pra passagem de lista
-        typedef sequence<Contact> contactList;
+        typedef sequence<Contact> ContactList;
 
         exception ContactAlreadyExistsException {
-            string message;
-            string name;
         };
 
         exception NoContactFoundException {
-            string message;
         };
 
         exception MalformedTelNumberException {
-            string telNumber;
         };
 
         //Camada de acesso Usuario->Servidor
@@ -35,7 +31,7 @@ module br {
 
                 Contact getByName(in string name) raises (NoContactFoundException);
 
-                contactList getAll() raises (NoContactFoundException);
+                ContactList getAll() raises (NoContactFoundException);
 
                 void update(in Contact contact) raises (NoContactFoundException, MalformedTelNumberException);
 
@@ -49,7 +45,7 @@ module br {
             interface AgendaBackbone {
                 void propagateCreate(in Contact newContact);
 
-                contactList getAll();
+                ContactList getAll();
 
                 void propagateUpdate(in Contact updatedContact);
 

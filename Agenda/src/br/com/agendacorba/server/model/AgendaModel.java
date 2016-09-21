@@ -2,8 +2,10 @@ package br.com.agendacorba.server.model;
 
 import br.com.agendacorba.agenda.Contact;
 import br.com.agendacorba.agenda.ContactAlreadyExistsException;
+import br.com.agendacorba.agenda.MalformedTelNumberException;
 import br.com.agendacorba.agenda.NoContactFoundException;
 import br.com.agendacorba.agenda.access.AgendaAccessOperations;
+import br.com.agendacorba.agenda.access.AgendaAccessPOA;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +28,10 @@ public class AgendaModel implements Agenda {
         contactList = new ArrayList<Contact>();
     }
 
+    public boolean isTelephone(String telNumber) throws MalformedTelNumberException {
+        //TODO IMPLEMENTAR!
+        return false;
+    }
 
     @Override
     public void create(Contact created) throws ContactAlreadyExistsException {
@@ -35,6 +41,9 @@ public class AgendaModel implements Agenda {
                 throw new ContactAlreadyExistsException();
 
         } catch (NoContactFoundException e) {
+            System.out.println("INFO: creating contact: " +
+                    created.name + ", " + created.telNumber);
+
             contactList.add(created);
         }
     }
@@ -56,20 +65,24 @@ public class AgendaModel implements Agenda {
     public Contact getByName(String name) throws NoContactFoundException {
         Contact existing = null;
 
-        if (contactList.isEmpty())
+        if (!contactList.isEmpty())
+            for (Contact i : contactList) {
+                if (i.name.equals(name))
+                    existing = i;
+            }
+        else
             throw new NoContactFoundException();
 
-        for (Contact i : contactList) {
-            if (i.name.equals(name))
-                existing = i;
-        }
-        return existing;
+        if (existing == null)
+            throw new NoContactFoundException();
+        else
+            return existing;
     }
 
     @Override
     public Contact[] getAll() throws NoContactFoundException {
         if (contactList.size() > 0) {
-            Contact[] contacts = (Contact[]) contactList.toArray().clone();
+            Contact[] contacts = contactList.toArray(new Contact[contactList.size()]);
             return contacts;
         } else
             throw new NoContactFoundException();

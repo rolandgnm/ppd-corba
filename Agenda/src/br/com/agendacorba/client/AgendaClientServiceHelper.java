@@ -2,7 +2,6 @@ package br.com.agendacorba.client;
 
 import br.com.agendacorba.agenda.access.AgendaAccess;
 import br.com.agendacorba.agenda.access.AgendaAccessHelper;
-import br.com.agendacorba.server.access.AgendaAccessImpl;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CORBA.Object;
@@ -24,16 +23,14 @@ public class AgendaClientServiceHelper {
     private static ORB orb;
     private static Object objNameService;
     private static NamingContext rootContext;
-    private Object objRefToServant;
     private final NameComponent agendaContextName = new NameComponent("AgendaAccess", "access");
-    private AgendaAccess agendaStub;
     private String nsKind = "access";
     private String[] instanceNames = {
             "agenda1",
             "agenda2",
             "agenda3"};
 
-    private static List<NameComponent> agendaNames;
+    private static List<NameComponent> agendaNameComp;
     private NameComponent[] compoundName;
 
     //TODO Compor lista com caminho pra cada Servant
@@ -41,10 +38,10 @@ public class AgendaClientServiceHelper {
 
     public AgendaClientServiceHelper(String[] args) {
 
-        agendaNames = new ArrayList<>();
-        agendaNames.add(new NameComponent(instanceNames[0], nsKind));
-        agendaNames.add(new NameComponent(instanceNames[1], nsKind));
-        agendaNames.add(new NameComponent(instanceNames[2], nsKind));
+        agendaNameComp = new ArrayList<>();
+        agendaNameComp.add(new NameComponent(instanceNames[0], nsKind));
+        agendaNameComp.add(new NameComponent(instanceNames[1], nsKind));
+        agendaNameComp.add(new NameComponent(instanceNames[2], nsKind));
 
         orb = ORB.init(args, null);
 
@@ -62,7 +59,7 @@ public class AgendaClientServiceHelper {
         compoundName = null;
         Object servantRef;
         AgendaAccess agenda;
-        Iterator<NameComponent> agendaI = agendaNames.iterator();
+        Iterator<NameComponent> agendaI = agendaNameComp.iterator();
         agenda = null;
 
         while (agendaI.hasNext()) {

@@ -112,6 +112,7 @@ public class ClientController {
     private void searchContactByName() throws Exception {
         String name = getNameFromInput(MESSAGE.SEARCH_NAME);
 
+
         try {
             Contact contact = agendaStub.getByName(name);
             System.out.println(MESSAGE.CONTACT_FOUND.toString());
@@ -126,6 +127,11 @@ public class ClientController {
     }
 
     private void listAllContacts() throws Exception {
+        //TODO TESTAR _non_existent()
+        if(agendaStub._non_existent()){
+            agendaService.unbindCurrentServer();
+            findServantOrExit();
+        }
 
         try {
             Contact[] contactList = agendaStub.getAll();

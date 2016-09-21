@@ -20,26 +20,34 @@ public class ServerController implements AgendaOperations {
     Agenda agendaModel;
 
     public ServerController(String[] ORBargs) {
-//        backboneHelper = new AgendaBackboneServiceHelper(ORBargs);
-//        backboneHelper.findServants();
+        backboneHelper = new AgendaBackboneServiceHelper(ORBargs);
+        backboneHelper.findBackboneServants();
 
-//        if (backboneHelper.hasServant()) {
-//            agendaModel = new AgendaModel(backboneHelper.getCurrentList()); //pedir lista vai proprio controller
-//        }
-//        else
-        agendaModel = new AgendaModel();
+        if (backboneHelper.hasSiblings())
+            agendaModel = new AgendaModel(backboneHelper.getCurrentList()); //pedir lista vai proprio controller
+        else
+            agendaModel = new AgendaModel();
 
-//        instanceName = backboneHelper.getInstanceName();
+        try {
+            instanceName = backboneHelper.getAgendaAccessInstanceName();
+        } catch (Exception e) {
+            System.err.print(e.getMessage());
+            System.exit(0);
+        }
 
-        //TODO Temp.
-        instanceName = "agenda2";
         accessHelper = new AgendaAccessServiceHelper(instanceName, ORBargs);
 
         /**
-         * Passa referência da Controller pra ser chamado pelos POAImpl
+         * Passa referência da Controller pra ser chamado pelo servant
          */
-//        backboneHelper.buildServantAndBind(this); //passa controller para POAImpl chamar action
-//        backboneHelper.notifyServants();
+        ServerController controller = this;
+        new Thread() {
+            public void run() {
+                backboneHelper.buildBackboneInstanceAndBind(controller); //passa controller para POAImpl chamar action
+            }
+        }.start();
+
+        backboneHelper.notifyServants();
 
         accessHelper.buildServantAndBind(this);
     }
@@ -56,19 +64,23 @@ public class ServerController implements AgendaOperations {
             throw new MalformedTelNumberException();
         }
 
-//        if (propagate);
+        if (propagate)
+            backboneHelper.propagateCreate(created);
     }
 
     @Override
     public void update(Contact contact, Boolean propagate) throws NoContactFoundException, MalformedTelNumberException {
         agendaModel.update(contact);
-//        if (propagate);
+        if (propagate)
+            backboneHelper.propagateUpdate(contact);
     }
 
     @Override
     public void deleteByName(String name, Boolean propagate) throws NoContactFoundException {
+        Contact contact = agendaModel.getByName(name);
         agendaModel.deleteByName(name);
-//        if (propagate);
+        if (propagate)
+            backboneHelper.propagateDelete(contact);
     }
 
     @Override
@@ -83,5 +95,9 @@ public class ServerController implements AgendaOperations {
         } catch (NoContactFoundException e) {
             throw new NoContactFoundException();
         }
+    }
+
+    public void bindDuplexConnection(String requesterName) {
+        backboneHelper.bindDuplexConnection(requesterName);
     }
 }

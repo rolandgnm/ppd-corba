@@ -67,9 +67,10 @@ public class AgendaAccessServiceHelper {
             notFound.printStackTrace();
         }
 
-        System.out.println("INFO: Context Bound with name " + namespace + ":"  + nsKind);
+        System.out.println("INFO: Context bound with name " + namespace + ":"  + nsKind);
 
     }
+
 
 
     public void buildServantAndBind(ServerController serverController) {

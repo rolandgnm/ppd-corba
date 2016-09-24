@@ -28,4 +28,3 @@ $ java -jar Cliente.jar -ORBInitialPort 1050
 * IntelliJ IDEA CE 2016.1.3 (finalização) 
 * Java 8 (jdk1.8.0_92.jdk)
 
-###### especial thanks to [Derek Banas](http://www.newthinktank.com/2013/02/mvc-java-tutorial/)

@@ -6,8 +6,8 @@
 ###Agenda de telefones usando CORBA
 
 ##Run
-- Download [jar/Agenda.jar](https://_)
-- Download [jar/Cliente.jar](https://_)
+- Download [jar/Agenda.jar](https://github.com/rolandgnm/ppd-corba/raw/master/Agenda/jar/Agenda.jar)
+- Download [jar/Cliente.jar](https://github.com/rolandgnm/ppd-corba/raw/master/Agenda/jar/Cliente.jar)
 
 ###Executar Servidor de nomes do ORB
 ```{r, engine='bash', count_lines} 
